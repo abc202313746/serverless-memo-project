@@ -56,7 +56,7 @@ onMounted(() => {
 
 <template>
   <div style="padding: 40px; max-width: 600px; margin: 0 auto;">
-    <h1>😈 Day 2: 메모장 완성</h1>
+    <h1>🚀 Day 4: CI/CD 자동 배포 성공!</h1>
 
     <!-- 입력 폼 -->
     <div style="display: flex; gap: 10px; margin-bottom: 20px;">

@@ -1,0 +1,45 @@
+name: Deploy to AWS
+
+on:
+  push:
+    branches:
+      - main  # main 브랜치에 push 될 때만 실행
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. 코드 가져오기
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2. Node.js 설치 (프론트엔드 빌드용)
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      # 3. 의존성 설치 및 빌드
+      - name: Install dependencies and Build
+        run: |
+          npm install
+          npm run build
+        # (주의: package.json이 있는 폴더 위치가 루트가 아니라면 cd 명령어로 이동해야 함)
+
+      # 4. AWS 자격 증명 설정
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      # 5. S3에 프론트엔드 파일 업로드 (Sync)
+      - name: Deploy to S3
+        # 'your-bucket-name' 부분을 님 버킷 이름으로 수정하세요!
+        run: aws s3 sync ./dist s3://my-memo-app-2025-insookyoung --delete
+
+    # 6. Lambda 함수 코드 업데이트 (선택 - 백엔드 코드도 같이 관리할 경우)
+    # 지금은 프론트엔드(S3) 배포만 먼저 성공시키는 걸 목표로 합시다.
+    # 나중에 Lambda도 자동화하고 싶으면 여기에 추가하면 됨.

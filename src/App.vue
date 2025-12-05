@@ -5,7 +5,7 @@ const content = ref('')
 const memos = ref([]) // 메모 리스트 담을 변수
 const status = ref('대기 중...')
 
-// 어제 그 주소 그대로 쓰면 됨!
+
 const API_URL = 'https://sdfeuxx3ch.execute-api.us-east-1.amazonaws.com/dev/memos'
 
 // 1. 메모 목록 불러오기 (GET)
